@@ -160,7 +160,7 @@ python src/train.py \
 
 ### 1. 推理（翻译新句子）
 
-使用 `--predict` 参数来加载模型并翻译你输入的句子：
+加载模型并翻译你输入的句子：
 
 ```
 python translate.py 
