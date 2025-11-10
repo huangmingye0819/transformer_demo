@@ -1,5 +1,7 @@
 # transformer_demo
-🤖 从零开始实现 Transformer本项目是 "Attention Is All You Need" (Vaswani et al., 2017) 论文中 Transformer 模型的 PyTorch 完整实现。该实现包含一个完整的 Encoder-Decoder 架构，用于英中（EN-ZH）机器翻译任务。项目重点在于深入理解模型的每一个构建模块，并通过一系列对比实验（如正则化和消融实验）来分析模型行为。目录核心特性项目结构环境配置数据集如何运行训练（复现主要实验）评估（测试集）推理（翻译新句子）硬件要求实验结果与分析主要结果：“小而精”模型（12M参数）对比实验 1：过拟合（30M参数 + 弱正则化）对比实验 2：消融实验（移除位置编码）参考文献🌟 核心特性完整架构: 实现了完整的 Encoder-Decoder Transformer 架构。核心模块: 包含以下所有关键组件的从零实现：ScaledDotProductAttentionMultiHeadAttentionPositionwiseFeedForwardPositionalEncoding (使用 sin/cos 函数)EncoderLayer 和 DecoderLayerEncoder 和 Decoder 堆栈TransformerSeq2Seq (最终的封装模型)掩码机制:填充掩码 (Padding Mask)：在 Encoder 和 Decoder 中忽略 <pad> 标记。前瞻掩码 (Look-ahead Mask)：用于 Decoder，确保在预测时不会“偷看”未来的词。训练策略:实现了标签平滑（Label Smoothing）。结合 AdamW 优化器和权重衰减（Weight Decay）。实现了带 Warmup 步数的学习率调度器。可复现性: 提供了精确的训练命令和随机种子，以保证实验结果的可复现性。📁 项目结构.
+🤖 从零开始实现 Transformer本项目是 "Attention Is All You Need" (Vaswani et al., 2017) 
+论文中 Transformer 模型的 PyTorch 完整实现。该实现包含一个完整的 Encoder-Decoder 架构，用于英中（EN-ZH）机器翻译任务。项目重点在于深入理解模型的每一个构建模块，并通过一系列对比实验来分析模型行为。硬件要求实验结果与分析主要结果：“小而精”模型（12M参数）对比实验 1：过拟合（30M参数 + 弱正则化）对比实验 2：消融实验（移除位置编码）参考文献🌟 核心特性完整架构: 实现了完整的 Encoder-Decoder Transformer 架构。核心模块: 包含以下所有关键组件的从零实现：ScaledDotProductAttentionMultiHeadAttentionPositionwiseFeedForwardPositionalEncoding (使用 sin/cos 函数)EncoderLayer 和 DecoderLayerEncoder 和 Decoder 堆栈TransformerSeq2Seq (最终的封装模型)掩码机制:填充掩码 (Padding Mask)：在 Encoder 和 Decoder 中忽略 <pad> 标记。前瞻掩码 (Look-ahead Mask)：用于 Decoder，确保在预测时不会“偷看”未来的词。训练策略:实现了标签平滑（Label Smoothing）。结合 AdamW 优化器和权重衰减（Weight Decay）。实现了带 Warmup 步数的学习率调度器。可复现性: 提供了精确的训练命令和随机种子，以保证实验结果的可复现性。
+📁 项目结构.
 ├── checkpoints/        # (自动创建) 存放训练好的模型权重 (.pth) 和词表 (.json)
 ├── data/               # (自动创建) Hugging Face 'datasets' 库的缓存目录
 ├── results/            # 存放训练曲线图和实验结果
