@@ -203,19 +203,6 @@ python translate.py
 
 ## 📄 参考文献
 
-[1] Kyunghyun Cho, Bart Van Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares,
-Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder
-for statistical machine translation. arXiv preprint arXiv:1406.1078, 2014.
-[2] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: Pre-training of deep
-bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.
-[3] Sepp Hochreiter and Jürgen Schmidhuber. Long short-term memory. Neural computation,
-9(8):1735–1780, 1997.
-[4] Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.
-[5] Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena,
-Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified
-text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.
-[6] David E Rumelhart, Geoffrey E Hinton, and Ronald J Williams. Learning internal representations
-by error propagation. Nature, 323(6088):533–536, 1986.
-[7] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,
-Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information
-processing systems, 30, 2017.
+[1] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). [Attention is all you need](https://arxiv.org/abs/1706.03762). *Advances in neural information processing systems, 30*.
+
+
