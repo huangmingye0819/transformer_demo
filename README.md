@@ -15,8 +15,8 @@
   - [评估（测试集）](https://www.google.com/search?q=%232-评估测试集)
 - [硬件要求](https://www.google.com/search?q=%23-硬件要求)
 - [实验结果与分析](https://www.google.com/search?q=%23-实验结果与分析)
-  - [主要结果：“小而精”模型（12M参数）](https://www.google.com/search?q=%231-主要结果小而精模型12m参数)
-  - [对比实验 1：过拟合（30M参数 + 弱正则化）](https://www.google.com/search?q=%232-对比实验-1过拟合30m参数--弱正则化)
+  - [主要结果](https://www.google.com/search?q=%231-主要结果)
+  - [对比实验 1](https://www.google.com/search?q=%232-对比实验-1过拟合)
   - [对比实验 2：消融实验（移除位置编码）](https://www.google.com/search?q=%233-对比实验-2消融实验移除位置编码)
 - [参考文献](https://www.google.com/search?q=%23-参考文献)
 
