@@ -12,7 +12,7 @@
 - [数据集](https://www.google.com/search?q=%23-数据集)
 - [如何运行](https://www.google.com/search?q=%23-如何运行)
   - [训练（复现主要实验）](https://www.google.com/search?q=%231-训练复现主要实验)
-  - [评估（测试集）](https://www.google.com/search?q=%232-评估测试集)
+  - [评估](https://www.google.com/search?q=%232-评估测试集)
 - [硬件要求](https://www.google.com/search?q=%23-硬件要求)
 - [实验结果与分析](https://www.google.com/search?q=%23-实验结果与分析)
   - [主要结果](https://www.google.com/search?q=%231-主要结果)
@@ -189,7 +189,7 @@ python translate.py
 
 为了对比，我们尝试了其他参数的模型。
 
-如图（`results/overfitting_loss.png`）所示，该模型表现出**严重的过拟合**。训练损失（蓝线）迅速下降，但验证损失（橙线）在第 5 个 Epoch 后便停止下降并开始反弹。这证明了对于 IWSLT 这种规模的数据集，模型容量过大且缺乏足够正则化，会导致模型“背诵”训练数据，而丧失泛化能力。
+如图（`results/overfitting_loss.png`）所示，该模型表现出**严重的过拟合**。训练损失（蓝线）迅速下降，但验证损失（橙线）在第5个Epoch后便停止下降并开始反弹。这证明了对于 IWSLT 这种规模的数据集，模型容量过大且缺乏足够正则化，会导致模型“背诵”训练数据，而丧失泛化能力。
 
 
 ### 3. 对比实验 2：消融实验（移除位置编码）
