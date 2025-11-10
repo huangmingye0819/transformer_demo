@@ -1,0 +1,6 @@
+# requirements.txt
+torch>=1.10.0
+datasets==3.6.0
+tokenizers
+matplotlib
+tqdm
