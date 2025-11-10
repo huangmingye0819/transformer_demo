@@ -2,7 +2,7 @@
 
 本项目是 "Attention Is All You Need" (Vaswani et al., 2017) 论文中 Transformer 模型的 PyTorch 完整实现。
 
-该实现包含一个完整的 Encoder-Decoder 架构，用于**英中（EN-ZH）机器翻译**任务。项目重点在于深入理解模型的每一个构建模块，并通过一系列对比实验（如正则化和消融实验）来分析模型行为。
+该实现包含一个完整的 Encoder-Decoder 架构，用于**英中（EN-ZH）机器翻译**任务。项目重点在于深入理解模型的每一个构建模块，并通过一系列对比实验来分析模型行为。
 
 ## 目录
 
@@ -13,7 +13,6 @@
 - [如何运行](https://www.google.com/search?q=%23-如何运行)
   - [训练（复现主要实验）](https://www.google.com/search?q=%231-训练复现主要实验)
   - [评估（测试集）](https://www.google.com/search?q=%232-评估测试集)
-  - [推理（翻译新句子）](https://www.google.com/search?q=%233-推理翻译新句子)
 - [硬件要求](https://www.google.com/search?q=%23-硬件要求)
 - [实验结果与分析](https://www.google.com/search?q=%23-实验结果与分析)
   - [主要结果：“小而精”模型（12M参数）](https://www.google.com/search?q=%231-主要结果小而精模型12m参数)
@@ -28,10 +27,10 @@
   - `ScaledDotProductAttention`
   - `MultiHeadAttention`
   - `PositionwiseFeedForward`
-  - `PositionalEncoding` (使用 `sin/cos` 函数)
+  - `PositionalEncoding` 
   - `EncoderLayer` 和 `DecoderLayer`
-  - `Encoder` 和 `Decoder` 堆栈
-  - `TransformerSeq2Seq` (最终的封装模型)
+  - `Encoder` 和 `Decoder`
+  - `TransformerSeq2Seq`
 - **掩码机制**:
   - **填充掩码 (Padding Mask)**：在 Encoder 和 Decoder 中忽略 `<pad>` 标记。
   - **前瞻掩码 (Look-ahead Mask)**：用于 Decoder，确保在预测时不会“偷看”未来的词。
@@ -48,16 +47,15 @@
 ├── checkpoints/        # (自动创建) 存放训练好的模型权重 (.pth) 和词表 (.json)
 ├── data/               # (自动创建) Hugging Face 'datasets' 库的缓存目录
 ├── results/            # 存放训练曲线图和实验结果
-│   ├── successful_loss_curve.png  <- 你的成功实验损失图
-│   ├── overfitting_loss.png       <- 你的过拟合对比图
-│   └── no_pe_loss.png             <- 你的无位置编码消融实验图
+│   ├── successful_loss_curve.png  
+│   ├── overfitting_loss.png       
+│   └── no_pe_loss.png             
 ├── scripts/
-│   └── run.sh          # (可选) 用于启动训练的Shell脚本
+│   └── run.sh          # 用于启动训练的Shell脚本
 ├── src/
-│   ├── model.py        # Transformer 核心模型架构 (所有模块)
+│   ├── model.py        # Transformer 核心模型架构
 │   ├── train.py        # 训练、评估、推理的主脚本
-│   ├── data_loader.py  # (假设) 数据集处理和 Tokenizer
-│   └── utils.py        # (假设) 绘图、参数统计等辅助函数
+│   └── utils.py        # 绘图、参数统计等辅助函数
 ├── requirements.txt    # 运行所需的 Python 依赖
 └── README.md           # 本文档
 ```
@@ -83,8 +81,7 @@
    本项目依赖于 PyTorch 和 Hugging Face 生态系统中的 datasets, tokenizers, 和 torchmetrics。
 
    ```
-   # PyTorch (请根据你的 CUDA 版本从官网 [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/) 获取命令)
-   # 例如 (CUDA 11.8):
+   # PyTorch
    # pip3 install torch torchvision torchaudio --index-url [https://download.pytorch.org/whl/cu118](https://download.pytorch.org/whl/cu118)
    
    # 安装其他依赖
@@ -123,17 +120,17 @@
 
 ### 1. 训练（复现主要实验）
 
-这是用于复现报告中**“小而精”模型（约1200万参数）**的精确命令。该命令使用了最佳超参数配置，包括所有正则化技巧。
+这是用于复现报告中模型的精确命令。该命令使用了最佳超参数配置，包括所有正则化技巧。
 
 ```
 python src/train.py \
-    --embedding_dim 128 \
-    --num_heads 4 \
+    --embedding_dim 256 \
+    --num_heads 8 \
     --feed_forward_dim 512 \
-    --num_layers 3 \
+    --num_layers 4 \
     --batch_size 32 \
-    --learning_rate 3e-4 \
-    --num_epochs 40 \
+    --learning_rate 1e-4 \
+    --num_epochs 30 \
     --dropout 0.3 \
     --label_smoothing 0.1 \
     --weight_decay 0.01 \
@@ -145,64 +142,53 @@ python src/train.py \
 
 **参数说明:**
 
-- `--embedding_dim`: $d_{\text{model}}$![img]()
+- `--embedding_dim`: 词维度
 - `--num_heads`: 注意力头数
 - `--feed_forward_dim`: FFN 内部隐藏层维度
 - `--num_layers`: Encoder 和 Decoder 各自的层数
 - `--batch_size`: 批量大小
 - `--learning_rate`: 最大学习率
 - `--num_epochs`: 训练轮数
-- `--dropout`: Dropout 比例 (应用于模型各处)
+- `--dropout`: Dropout 比例
 - `--label_smoothing`: 标签平滑系数
 - `--weight_decay`: AdamW 优化器的权重衰减系数
 - `--warmup_steps`: 学习率预热的步数
 - `--seed`: 固定随机种子，用于复现
-- `--save_path`: 最佳模型（基于验证损失）的保存路径
+- `--save_path`: 最佳模型的保存路径
 - `--plot_path`: 训练/验证损失曲线图的保存路径
 
-### 2. 评估（测试集）
 
-如果你想在一个已保存的模型上重新运行评估（计算验证集 BLEU 分数）：
-
-```
-python src/train.py \
-    --load_model "checkpoints/iwslt_en_zh_12M.pth" \
-    --eval_only
-```
-
-### 3. 推理（翻译新句子）
+### 1. 推理（翻译新句子）
 
 使用 `--predict` 参数来加载模型并翻译你输入的句子：
 
 ```
-python src/train.py \
-    --load_model "checkpoints/iwslt_en_zh_12M.pth" \
-    --predict "Hello, how are you?"
+python translate.py 
 ```
 
-脚本将加载模型，处理输入，并打印出中文翻译结果。
+脚本将加载模型，处理输入，并打印出中文翻译结果。但是要注意参数要和train.py保持一致
 
 ## 💻 硬件要求
 
 - **GPU**: 强烈推荐使用 NVIDIA GPU。
 - **显存 (VRAM)**:
-  - 对于上述的“小而精”（12M参数）配置（`d_model=128`, `batch_size=32`），训练需要约 **6GB - 8GB** 显存。
-  - 对于报告中提到的“30M参数”模型（`d_model=256`），显存需求会显著增加，建议 **16GB** 以上。
+  - 对于上述的12M参数配置（`d_model=128`, `batch_size=32`），训练需要约 **6GB - 8GB** 显存。
+  - 对于报告中提到的28M参数配置（`d_model=256`），显存需求会显著增加，建议 **16GB** 以上。
 - **CPU/RAM**: 数据预处理在 CPU 上完成，建议至少 16GB 内存以获得流畅体验。
 
 ## 📊 实验结果与分析
 
-### 1. 主要结果：“小而精”模型（12M参数）
+### 1. 主要结果：
 
-我们最终采用了 12M 参数的轻量级模型，并配合了强有力的正则化组合（Dropout=0.3, 权重衰减=0.01, 标签平滑=0.1）。
+我们最终采用了 28M 参数的轻量级模型，并配合了强有力的正则化组合（Dropout=0.3, 权重衰减=0.01, 标签平滑=0.1）。
 
 从下方的损失曲线可以看出，训练损失（Training Loss）和验证损失（Validation Loss）都在健康下降，且二者之间保持着较小的差距。这表明模型有效学习了翻译任务，同时成功地抑制了过拟合。
 
 *(请确保将你的**成功**训练曲线图命名为 `successful_loss_curve.png` 并放置在 `results/` 目录下)*
 
-### 2. 对S比实验 1：过拟合（30M参数 + 弱正则化）
+### 2. 对S比实验 1：过拟合
 
-为了对比，我们尝试了更大的模型（约30M参数，`d_model=256`）并使用了较弱的正则化（`dropout=0.1`）。
+为了对比，我们尝试了其他参数的模型。
 
 如下图（`results/overfitting_loss.png`）所示，该模型表现出**严重的过拟合**。训练损失（蓝线）迅速下降，但验证损失（橙线）在第 5 个 Epoch 后便停止下降并开始反弹。这证明了对于 IWSLT 这种规模的数据集，模型容量过大且缺乏足够正则化，会导致模型“背诵”训练数据，而丧失泛化能力。
 
@@ -210,7 +196,7 @@ python src/train.py \
 
 ### 3. 对比实验 2：消融实验（移除位置编码）
 
-为了验证位置编码（Positional Encoding）的必要性，我们进行了消融实验：使用 12M 参数的“小而精”模型，但**完全移除了位置编码模块**。
+为了验证位置编码的必要性，我们进行了消融实验：**完全移除了位置编码模块**。
 
 结果如下图（`results/no_pe_loss.png`）所示，模型**完全无法学习**。训练损失和验证损失均在高位（约 2.8-3.4）随机波动，没有任何下降趋势。
 
@@ -220,4 +206,19 @@ python src/train.py \
 
 ## 📄 参考文献
 
-[1] Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). [Attention is all you need](https://arxiv.org/abs/1706.03762). *Advances in neural information processing systems, 30*.
+[1] Kyunghyun Cho, Bart Van Merriënboer, Caglar Gulcehre, Dzmitry Bahdanau, Fethi Bougares,
+Holger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder-decoder
+for statistical machine translation. arXiv preprint arXiv:1406.1078, 2014.
+[2] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: Pre-training of deep
+bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.
+[3] Sepp Hochreiter and Jürgen Schmidhuber. Long short-term memory. Neural computation,
+9(8):1735–1780, 1997.
+[4] Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.
+[5] Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena,
+Yanqi Zhou, Wei Li, and Peter J Liu. Exploring the limits of transfer learning with a unified
+text-to-text transformer. Journal of Machine Learning Research, 21(140):1–67, 2020.
+[6] David E Rumelhart, Geoffrey E Hinton, and Ronald J Williams. Learning internal representations
+by error propagation. Nature, 323(6088):533–536, 1986.
+[7] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez,
+Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information
+processing systems, 30, 2017.
