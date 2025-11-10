@@ -69,7 +69,7 @@
    cd transformer_demo
    ```
 
-2. **创建 Conda 环境 (推荐)**
+2. **创建 Conda 环境**
 
    ```
    conda create -n transformer python=3.10
