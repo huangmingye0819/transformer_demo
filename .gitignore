@@ -1,0 +1,31 @@
+Python cache
+
+pycache/
+*.py[cod]
+*$py.class
+
+PyTorch model checkpoints
+
+*.pth
+*.pt
+
+/dataset_cache/
+/checkpoints/
+
+Jupyter Notebook checkpoints
+
+.ipynb_checkpoints
+
+macOS files
+
+.DS_Store
+
+Build artifacts
+
+/build/
+/dist/
+*.egg-info
+
+Log files
+
+*.log
